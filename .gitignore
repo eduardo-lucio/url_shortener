@@ -9,3 +9,6 @@ yarn-error.log*
 .pnp.js
 .env
 .vscode/*
+node_modules/
+dist/
+*.log
