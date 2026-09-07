@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import cors from "@fastify/cors"
 import fastify from "fastify";
 import z from "zod";
 import { generate } from "short-uuid";
@@ -201,6 +202,10 @@ app.get("/:url", async (req, res) => {
 
 async function start() {
     try {
+        await app.register(cors, {
+            origin: "http://localhost:5173", // ou origin: "*" durante os testes locais
+            methods: ["GET", "POST", "PUT", "DELETE"],
+        });
         await app.listen({ port });
         console.log(`Server running on port ${port}`);
         await cleanExpiredUrls();
@@ -208,6 +213,7 @@ async function start() {
         console.error("Application startup error:", e);
         process.exit(1);
     }
+
 }
 
 start();
