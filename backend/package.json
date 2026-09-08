@@ -1,19 +1,24 @@
 {
-  "name": "src",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eduardo-lucio/nickel"
-  },
-  "private": true,
   "dependencies": {
-    "@fastify/cors": "^11.3.0"
+    "@fastify/cors": "^10.0.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "pg": "^8.13.0",
+    "short-uuid": "^5.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
   }
 }
