@@ -5,7 +5,7 @@ import cors from "@fastify/cors"
 import fastify from "fastify";
 import z from "zod";
 import { generate } from "short-uuid";
-import Pool from "pg-pool";
+import { Pool } from 'pg';
 
 const port = Number(process.env.PORT) || 3000;
 const app = fastify({ logger: true });
