@@ -20,6 +20,9 @@ export function UrlForm() {
     const [apiError, setApiError] = useState<apiErrorType | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isCopied, setIsCopied] = useState<boolean>(false);
+    const [validData, setValidData] = useState(new Date());
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
     async function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
         if(!isLoading){
@@ -28,7 +31,7 @@ export function UrlForm() {
             setApiResponse(null)
             setApiError(null)
             if(customUrl === "") {
-                response = await fetch("http://localhost:3000/urls",{
+                response = await fetch(`${API_URL}/urls`,{
                     method: "post",
                     headers: {
                         "content-type": "application/json"
@@ -39,7 +42,7 @@ export function UrlForm() {
                     })
                 })
             } else{
-                response = await fetch("http://localhost:3000/urls/custom",{
+                response = await fetch(`${API_URL}/urls/custom`,{
                     method: "post",
                     headers: {
                         "content-type": "application/json"
@@ -56,7 +59,9 @@ export function UrlForm() {
                 setUrl("")
                 setValidDays(1)
                 setCustomUrl("")
-                setApiResponse(data)
+                const dataSchema = new Date(data)
+                setValidData(dataSchema)
+                setApiResponse(data.expirationDate)
                 setShortUrl(`http://localhost:3000/${data.shortUrl}`);
             }else{
                 setApiError(data)
@@ -105,7 +110,7 @@ export function UrlForm() {
                     <ul className="space-y-2 text-white">
                         <li className={"break-all"}>Original URL: <a href={apiResponse.originalUrl}>{apiResponse.originalUrl}</a></li>
                         <li>Short URL: <a href={shortUrl}>{shortUrl}</a></li>
-                        <li>Expiration date: {apiResponse.expirationDate}</li>
+                        <li>Expiration date: {validData.toLocaleDateString('pt-BR')}</li>
                     </ul>
                     <button className={"w-full bg-[#242424] text-white border border-[#81807D] focus-visible:border-white rounded-md p-1 flex justify-center"} onClick={async ()=>{
                         await navigator.clipboard.writeText(shortUrl)

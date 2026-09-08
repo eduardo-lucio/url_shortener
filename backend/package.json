@@ -10,5 +10,8 @@
     "type": "git",
     "url": "https://github.com/eduardo-lucio/nickel"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@fastify/cors": "^11.3.0"
+  }
 }

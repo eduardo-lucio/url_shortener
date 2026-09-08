@@ -16,10 +16,14 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: Number(process.env.DB_PORT),
     host: process.env.DB_HOST,
+    ssl: true,
 });
 
 const RESERVED_URLS = new Set(["favicon.ico", "urls", "admin"]);
-
+app.register(cors, {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+});
 app.setErrorHandler((error, req, res) => {
     if (error instanceof z.ZodError) {
         return res.status(400).send({
@@ -48,7 +52,10 @@ app.setErrorHandler((error, req, res) => {
         message: "An unexpected error occurred on the server.",
     });
 });
-
+export default async function handler(req: any, res: any) {
+    await app.ready();
+    app.server.emit('request', req, res);
+}
 async function cleanExpiredUrls() {
     try {
         const deletedRows = await pool.query(`
@@ -60,8 +67,6 @@ async function cleanExpiredUrls() {
         console.error("Expired URLs cleanup failed:", e);
     }
 }
-
-setInterval(cleanExpiredUrls, 86_400_000);
 
 app.post("/urls", async (req, res) => {
     const urlSchema = z.object({
@@ -202,10 +207,7 @@ app.get("/:url", async (req, res) => {
 
 async function start() {
     try {
-        await app.register(cors, {
-            origin: "http://localhost:5173", // ou origin: "*" durante os testes locais
-            methods: ["GET", "POST", "PUT", "DELETE"],
-        });
+
         await app.listen({ port });
         console.log(`Server running on port ${port}`);
         await cleanExpiredUrls();
@@ -215,5 +217,7 @@ async function start() {
     }
 
 }
-
-start();
+if (!process.env.VERCEL) {
+    setInterval(cleanExpiredUrls, 86_400_000);
+    start();
+}
