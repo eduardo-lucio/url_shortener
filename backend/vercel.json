@@ -5,12 +5,20 @@
       "framework": "vite"
     },
     "backend": {
-      "root": "backend"
+      "root": "backend",
+      "outputDirectory": "dist"
     }
   },
   "rewrites": [
     {
-      "source": "/api(/.*)?",
+      "source": "/urls/:match*",
+      "destination": {
+        "type": "service",
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/urls",
       "destination": {
         "type": "service",
         "service": "backend"
