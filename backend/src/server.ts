@@ -21,7 +21,7 @@ const pool = new Pool({
 
 const RESERVED_URLS = new Set(["favicon.ico", "urls", "admin"]);
 app.register(cors, {
-    origin: "http://localhost:5173",
+    origin: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
 });
 app.setErrorHandler((error, req, res) => {
