@@ -21,7 +21,6 @@ export function UrlForm() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isCopied, setIsCopied] = useState<boolean>(false);
     const [validData, setValidData] = useState(new Date());
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
     async function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
@@ -31,7 +30,7 @@ export function UrlForm() {
             setApiResponse(null)
             setApiError(null)
             if(customUrl === "") {
-                response = await fetch(`${API_URL}/urls`,{
+                response = await fetch(`/urls`,{
                     method: "post",
                     headers: {
                         "content-type": "application/json"
@@ -42,7 +41,7 @@ export function UrlForm() {
                     })
                 })
             } else{
-                response = await fetch(`${API_URL}/urls/custom`,{
+                response = await fetch(`/urls/custom`,{
                     method: "post",
                     headers: {
                         "content-type": "application/json"
