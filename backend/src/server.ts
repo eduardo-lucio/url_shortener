@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import cors from "@fastify/cors"
 import fastify from "fastify";
 import z from "zod";
@@ -14,9 +11,11 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    port: Number(process.env.DB_PORT),
+    port: Number(process.env.DB_PORT) || 5432,
     host: process.env.DB_HOST,
-    ssl: true,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
 
 const RESERVED_URLS = new Set(["favicon.ico", "urls", "admin"]);
@@ -54,7 +53,22 @@ app.setErrorHandler((error, req, res) => {
 });
 export default async function handler(req: any, res: any) {
     await app.ready();
-    app.server.emit('request', req, res);
+
+    const response = await app.inject({
+        method: req.method,
+        url: req.url,
+        headers: req.headers,
+        query: req.query,
+        payload: req.body,
+    });
+
+    res.statusCode = response.statusCode;
+    for (const [key, value] of Object.entries(response.headers)) {
+        if (value !== undefined) {
+            res.setHeader(key, value);
+        }
+    }
+    return res.end(response.body);
 }
 async function cleanExpiredUrls() {
     try {
