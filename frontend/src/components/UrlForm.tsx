@@ -61,7 +61,7 @@ export function UrlForm() {
                 const dataSchema = new Date(data)
                 setValidData(dataSchema)
                 setApiResponse(data.expirationDate)
-                setShortUrl(`https://urlshortenerel.vercel.app/${data.shortUrl}`);
+                setShortUrl(`https://urlshortenerel.vercel.app/u/${data.shortUrl}`);
             }else{
                 setApiError(data)
             }
