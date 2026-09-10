@@ -58,9 +58,9 @@ export function UrlForm() {
                 setUrl("")
                 setValidDays(1)
                 setCustomUrl("")
-                const dataSchema = new Date(data)
+                const dataSchema = new Date(data.expirationDate)
                 setValidData(dataSchema)
-                setApiResponse(data.expirationDate)
+                setApiResponse(data)
                 setShortUrl(`https://urlshortenerel.vercel.app/u/${data.shortUrl}`);
             }else{
                 setApiError(data)
