@@ -177,7 +177,7 @@ app.get("/urls/:url/stats", async (req, res) => {
 });
 
 
-app.get("/:url", async (req, res) => {
+app.get("/u/:url", async (req, res) => {
     const paramsSchema = z.object({
         url: z.string().min(1, "URL parameter is required"),
     });
