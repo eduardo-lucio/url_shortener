@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^10.0.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "fastify": "^5.0.0",
     "pg": "^8.13.0",
     "short-uuid": "^5.2.0",
